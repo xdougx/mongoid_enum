@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 1.9.3"
 
-  s.add_runtime_dependency "mongoid", "~> 5.0"
+  s.add_runtime_dependency "mongoid"
 
   s.add_development_dependency "factory_girl", "~> 4.5"
   s.add_development_dependency "rubocop", "~> 0.35.1"
