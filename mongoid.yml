@@ -1,6 +1,0 @@
-development:
-  clients:
-    default:
-      database: enum_test
-      hosts:
-        - localhost:27017

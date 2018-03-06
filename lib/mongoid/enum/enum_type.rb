@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Mongoid
   module Enum
     # Internal: Mapping wrapper used as type for enum fields.

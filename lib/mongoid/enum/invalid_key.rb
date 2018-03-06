@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Mongoid
   module Enum
     # raised when InvalidKey is forced to be saved in DB (skipping validation)
