@@ -18,7 +18,7 @@ Metrics/PerceivedComplexity:
 
 # I'm going to use the whole Unicode until I run into problems. Because progress.
 # And because people have weird names.
-#   - Adam Wróbel
+#   - Adam Wrobel
 Style/AsciiComments:
   Enabled: false
 

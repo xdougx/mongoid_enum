@@ -1,9 +1,9 @@
 Gem::Specification.new do |s|
   s.name        = "mongoid_enum"
-  s.version     = "1.1.5"
+  s.version     = "1.1.6"
   s.summary     = "Enum fields for Mongoid"
   s.description = "Fields with closed set of possible values and helper methods to query/set them by label."
-  s.authors     = ["Adam Wróbel"]
+  s.authors     = ["Adam Wrobel"]
   s.email       = "adam@adamwrobel.com"
   s.files       = Dir.glob("lib/**/*") + %w(README.md LICENSE)
   s.homepage    = "https://github.com/amw/mongoid_enum"
