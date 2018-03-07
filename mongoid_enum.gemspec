@@ -1,8 +1,6 @@
-# encoding: utf-8
-
 Gem::Specification.new do |s|
   s.name        = "mongoid_enum"
-  s.version     = "1.1.4"
+  s.version     = "1.1.5"
   s.summary     = "Enum fields for Mongoid"
   s.description = "Fields with closed set of possible values and helper methods to query/set them by label."
   s.authors     = ["Adam Wróbel"]

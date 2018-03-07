@@ -1,14 +1,138 @@
-# encoding: utf-8
 require "mongoid/enum/enum_type"
 require "mongoid/enum/invalid_key"
 require "mongoid/enum/invalid_value"
 
 module Mongoid # :nodoc:
+  # Declare an enum field with scope and value checking helper methods. Example:
+  #
+  #   class Conversation
+  #     include Mongoid::Document
+  #     include Mongoid::Enum
+  #
+  #     enum status: [ :active, :archived ]
+  #   end
+  #
+  #   # conversation.update! status: "active"
+  #   conversation.active!
+  #   conversation.active? # => true
+  #   conversation.status  # => "active"
+  #
+  #   # conversation.update! status: "archived"
+  #   conversation.archived!
+  #   conversation.archived? # => true
+  #   conversation.status    # => "archived"
+  #
+  #   conversation.status = nil
+  #   conversation.status.nil? # => true
+  #   conversation.status      # => nil
+  #
+  #
+  # By default the whole label name is saved in the database as string, but you can
+  # explicitly declare values for each label. Strings, numbers, booleans, nil and some
+  # others types are allowed.
+  #
+  #   class Conversation
+  #     include Mongoid::Document
+  #     include Mongoid::Enum
+  #
+  #     enum status: { active: 0, archived: 1 }, _default: :active
+  #   end
+  #
+  # The mappings are exposed through a class constant with the pluralized field name.
+  # It defines the mapping using +HashWithIndifferentAccess+:
+  #
+  #   Conversation::STATUSES[:active]    # => 0
+  #   Conversation::STATUSES["archived"] # => 1
+  #
+  #
+  # Scopes based on the allowed values of the enum field will be provided
+  # as well. With the above example:
+  #
+  #   Conversation.active
+  #   Conversation.archived
+  #
+  # Of course, you can also query them directly if the scopes don't fit your
+  # needs:
+  #
+  #   Conversation.where(status: [:active, :archived])
+  #   Conversation.not.where(status: :active)
+  #
+  # If your field values are nouns you might prefer to have your scopes pluralized:
+  #
+  #   class Attachment
+  #     include Mongoid::Document
+  #     include Mongoid::Enum
+  #
+  #     enum type: %w{image video}, _plural_scopes: true
+  #   end
+  #
+  #   Attachment.videos.count
+  #
+  #
+  # Defining an enum automatically adds a validator on its field. Assigning values
+  # not included in enum definition will make the document invalid.
+  #
+  #   conversation = Conversation.new
+  #   conversation.status = :unknown
+  #   conversation.valid? # false
+  #
+  # Default validator allows nil values. Add your own presence validator if you require
+  # a value for the enum field.
+  #
+  #   class Conversation
+  #     include Mongoid::Document
+  #     include Mongoid::Enum
+  #
+  #     enum status: { active: 0, archived: 1 }, _default: :active
+  #
+  #     validates :status, presence: true
+  #   end
+  #
+  #
+  # You can use the +:_prefix+ or +:_suffix+ options when you need to define
+  # multiple enums with same values. If the passed value is +true+, the methods
+  # are prefixed/suffixed with the name of the field. It is also possible to
+  # supply a custom value:
+  #
+  #   class Conversation
+  #     include Mongoid::Document
+  #     include Mongoid::Enum
+  #
+  #     enum status: [:active, :archived], _suffix: true
+  #     enum comments_status: [:active, :inactive], _prefix: :comments
+  #   end
+  #
+  # With the above example, the bang and predicate methods along with the
+  # associated scopes are now prefixed and/or suffixed accordingly:
+  #
+  #   conversation.active_status!
+  #   conversation.archived_status? # => false
+  #
+  #   conversation.comments_inactive!
+  #   conversation.comments_active? # => false
+  #
+  #
+  # If you want to you can give nil value an explicit label.
+  #
+  #   class Part
+  #     include Mongoid::Document
+  #     include Mongoid::Enum
+  #
+  #     enum quality_control: {pending: nil, passed: true, failed: false}, _prefix: :qc
+  #   end
+  #
+  #   part = Part.qc_pending.first
+  #   part.qc_pending?        # true
+  #   part["quality_control"] # nil
+  #   part.quality_control    # "pending"
+  #   part.qc_passed!
+  #   part.quality_control    # "passed"
+  #   part["quality_control"] # true
   module Enum
     extend ActiveSupport::Concern
 
     included do
-      class_attribute(:Ver)
+      class_attribute(:enums)
       self.enums = {}
     end
 

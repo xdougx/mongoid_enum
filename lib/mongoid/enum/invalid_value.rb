@@ -1,4 +1,3 @@
-# encoding: utf-8
 module Mongoid
   module Enum
     # Public: Wraps invalid values loaded from DB before returning them via getter.
