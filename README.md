@@ -85,4 +85,4 @@ Read more in [documentation](http://www.rubydoc.info/gems/mongoid_enum/Mongoid/E
 
 Original implementation for ActiveRecord was created by David Heinemeier Hansson.
 Following modifications by other Rails contributors. Port to Mongoid prepared by Adam
-Wróbel.
+Wrobel.
